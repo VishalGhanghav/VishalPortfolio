@@ -37,22 +37,39 @@ const skillCategories = [
       { name: 'PostgreSQL', level: 'Proficient' },
       { name: 'Oracle SQL', level: 'Experienced' },
       { name: 'Redis', level: 'Proficient' },
-      { name: 'ClickHouse', level: 'Proficient' }
-      
+      { name: 'ClickHouse', level: 'Proficient' },
     ],
   },
   {
     title: 'Tools & Services',
-    skills: [
-      { name: 'AWS', level: 'Proficient' },
-      { name: 'Kubernetes', level: 'Proficient' },
-      { name: 'Docker', level: 'Proficient' },
-      { name: 'ArgoCD', level: 'Proficient' },
-      { name: 'Github', level: 'Experienced' },
-      { name: 'Grafana', level: 'Proficient' },
-      { name: 'Prometheus', level: 'Proficient' },
-      { name: 'Zipkin', level: 'Proficient' },
-      { name: 'K6', level: 'Proficient' },
+    groups: [
+      {
+        title: 'Cloud & Infrastructure',
+        skills: [
+          { name: 'AWS', level: 'Proficient' },
+          { name: 'Kubernetes', level: 'Proficient' },
+          { name: 'Docker', level: 'Proficient' },
+          { name: 'Helm', level: 'Proficient' },
+        ],
+      },
+      {
+        title: 'Delivery & Automation',
+        skills: [
+          { name: 'ArgoCD', level: 'Proficient' },
+          { name: 'GitHub', level: 'Experienced' },
+          { name: 'GitHub Copilot', level: 'Proficient' },
+          { name: 'Windsurf', level: 'Proficient' },
+        ],
+      },
+      {
+        title: 'Observability & Performance',
+        skills: [
+          { name: 'Grafana', level: 'Proficient' },
+          { name: 'Prometheus', level: 'Proficient' },
+          { name: 'Zipkin', level: 'Proficient' },
+          { name: 'K6', level: 'Proficient' },
+        ],
+      },
     ],
   },
 ];
@@ -124,6 +141,21 @@ const Header = () => (
           Let's Talk
         </a>
       </div>
+      <a
+        className="hero__feature"
+        href="https://www.youtube.com/watch?v=dqlWGtt-oPY"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span className="hero__feature-icon" role="img" aria-label="Featured video">
+          📺
+        </span>
+        <div>
+          <p className="hero__feature-subtitle">Featured on Concept & Coding</p>
+          <h5>Navigating My Tech Career Journey</h5>
+          <span className="hero__feature-cta">Watch the Podcast →</span>
+        </div>
+      </a>
       <div className="header__socials">
         {socialLinks.map(({ href, label, Icon }) => (
           <a key={href} href={href} target="_blank" rel="noreferrer" aria-label={label}>
@@ -207,21 +239,50 @@ const Skills = () => (
     <h2>My Skillset</h2>
     <div className="container skills__container">
       {skillCategories.map((category) => (
-        <div key={category.title} className="skills__category">
+        <div
+          key={category.title}
+          className={`skills__category${category.groups ? ' skills__category--wide' : ''}`}
+        >
           <h3>{category.title}</h3>
-          <div className="skills__content">
-            {category.skills.map((skill) => (
-              <article key={skill.name} className="skills__details">
-                <span className="skills__details-icon" aria-hidden="true">
-                  ✔
-                </span>
-                <div>
-                  <h4>{skill.name}</h4>
-                  <small className="text-light">{skill.level}</small>
+          {category.groups ? (
+            <div className="skills__groups">
+              {category.groups.map((group) => (
+                <div
+                  key={`${category.title}-${group.title ?? 'core'}`}
+                  className="skills__group"
+                >
+                  {group.title ? <h4>{group.title}</h4> : null}
+                  <div className="skills__content">
+                    {group.skills.map((skill) => (
+                      <article key={skill.name} className="skills__details">
+                        <span className="skills__details-icon" aria-hidden="true">
+                          ✔
+                        </span>
+                        <div>
+                          <h4>{skill.name}</h4>
+                          <small className="text-light">{skill.level}</small>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
                 </div>
-              </article>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="skills__content">
+              {category.skills.map((skill) => (
+                <article key={skill.name} className="skills__details">
+                  <span className="skills__details-icon" aria-hidden="true">
+                    ✔
+                  </span>
+                  <div>
+                    <h4>{skill.name}</h4>
+                    <small className="text-light">{skill.level}</small>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       ))}
     </div>
