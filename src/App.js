@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import './App.css';
 
 const ASSET_BASE = `${process.env.PUBLIC_URL}/assets`;
@@ -14,24 +15,43 @@ const navLinks = [
   { id: '#contact', label: 'Contact', Icon: ContactIcon },
 ];
 
-const backendSkills = [
-  { name: 'Core Java', level: 'Experienced' },
-  { name: 'Spring Boot', level: 'Experienced' },
-  { name: 'Apache Kafka', level: 'Advanced' },
-  { name: 'MySQL', level: 'Experienced' },
-  { name: 'Salesforce', level: 'Experienced' },
-  { name: 'Python', level: 'Intermediate' },
-  { name: 'AWS', level: 'Proficient' },
-  { name: 'Microservices Architecture', level: 'Advanced' },
-];
-
-const frontendSkills = [
-  { name: 'HTML', level: 'Intermediate' },
-  { name: 'CSS', level: 'Intermediate' },
-  { name: 'JavaScript', level: 'Advanced' },
-  { name: 'React', level: 'Advanced' },
-  { name: 'Node.js', level: 'Proficient' },
-  { name: 'Bootstrap', level: 'Intermediate' },
+const skillCategories = [
+  {
+    title: 'Technologies',
+    skills: [
+      { name: 'Java', level: 'Experienced' },
+      { name: 'Spring Boot', level: 'Experienced' },
+      { name: 'Node.js', level: 'Proficient' },
+      { name: 'Hibernate', level: 'Experienced' },
+      { name: 'Apache Kafka', level: 'Advanced' },
+      { name: 'ActiveMQ', level: 'Proficient' },
+      { name: 'ORMB', level: 'Experienced' },
+      { name: 'Microservices Architecture', level: 'Advanced' },
+    ],
+  },
+  {
+    title: 'Databases',
+    skills: [
+      { name: 'MySQL', level: 'Experienced' },
+      { name: 'MongoDB', level: 'Experienced' },
+      { name: 'PostgreSQL', level: 'Proficient' },
+      { name: 'Oracle SQL', level: 'Experienced' },
+    ],
+  },
+  {
+    title: 'Tools & Services',
+    skills: [
+      { name: 'AWS', level: 'Proficient' },
+      { name: 'Kubernetes', level: 'Proficient' },
+      { name: 'Docker', level: 'Proficient' },
+      { name: 'ArgoCD', level: 'Proficient' },
+      { name: 'Helm', level: 'Proficient' },
+      { name: 'Git', level: 'Experienced' },
+      { name: 'JIRA', level: 'Experienced' },
+      { name: 'Maven', level: 'Experienced' },
+      { name: 'JUnit', level: 'Experienced' },
+    ],
+  },
 ];
 
 const experienceTimeline = [
@@ -92,7 +112,7 @@ const Header = () => (
     <div className="container header__container">
       <h5>Hello, I'm</h5>
       <h1>Vishal Ghanghav</h1>
-      <h5 className="text-light">SDE-2 · Distributed Systems Specialist</h5>
+      <h5 className="text-light">Software Development Engineer-2</h5>
       <div className="cta">
         <a href={RESUME_URL} className="btn" download>
           Download CV
@@ -117,10 +137,16 @@ const Header = () => (
   </header>
 );
 
-const Nav = () => (
+const Nav = ({ activeSection, onSelect }) => (
   <nav>
     {navLinks.map(({ id, label, Icon }) => (
-      <a key={id} href={id} aria-label={label}>
+      <a
+        key={id}
+        href={id}
+        aria-label={label}
+        className={activeSection === id ? 'active' : ''}
+        onClick={() => onSelect(id)}
+      >
         <Icon />
       </a>
     ))}
@@ -162,7 +188,7 @@ const About = () => (
           </article>
         </div>
         <p>
-          I'm a backend-focused SDE-2 delivering event-driven, cloud-ready fintech platforms. I lead modernization efforts, automate observability, and champion performance engineering to ship resilient products quickly.
+          I'm SDE-2 with 4.7+ years of experience specializing in distributed and event-driven systems. Skilled in Java, SpringBoot, Kafka, and AWS, with a proven record of optimizing large-scale financial platforms for high throughput, reliability, and scalability.
         </p>
         <a href="#contact" className="btn btn-primary">
           Let's Talk
@@ -177,38 +203,24 @@ const Skills = () => (
     <h5>What Skills I Have</h5>
     <h2>My Skillset</h2>
     <div className="container skills__container">
-      <div className="skills__backend">
-        <h3>Backend Development</h3>
-        <div className="skills__content">
-          {backendSkills.map((skill) => (
-            <article key={skill.name} className="skills__details">
-              <span className="skills__details-icon" aria-hidden="true">
-                ✔
-              </span>
-              <div>
-                <h4>{skill.name}</h4>
-                <small className="text-light">{skill.level}</small>
-              </div>
-            </article>
-          ))}
+      {skillCategories.map((category) => (
+        <div key={category.title} className="skills__category">
+          <h3>{category.title}</h3>
+          <div className="skills__content">
+            {category.skills.map((skill) => (
+              <article key={skill.name} className="skills__details">
+                <span className="skills__details-icon" aria-hidden="true">
+                  ✔
+                </span>
+                <div>
+                  <h4>{skill.name}</h4>
+                  <small className="text-light">{skill.level}</small>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="skills__frontend">
-        <h3>Frontend & Platform</h3>
-        <div className="skills__content">
-          {frontendSkills.map((skill) => (
-            <article key={skill.name} className="skills__details">
-              <span className="skills__details-icon" aria-hidden="true">
-                ✔
-              </span>
-              <div>
-                <h4>{skill.name}</h4>
-                <small className="text-light">{skill.level}</small>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
+      ))}
     </div>
   </section>
 );
@@ -324,10 +336,44 @@ const Footer = () => (
 );
 
 function App() {
+  const [activeSection, setActiveSection] = useState('#top');
+
+  useEffect(() => {
+    const sectionIds = navLinks.map(({ id }) => id);
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight * 0.25;
+
+      for (const sectionId of sectionIds) {
+        const sectionEl = document.querySelector(sectionId);
+        if (!sectionEl) {
+          continue;
+        }
+
+        const { offsetTop, offsetHeight } = sectionEl;
+        if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+          setActiveSection(sectionId);
+          return;
+        }
+      }
+
+      if (window.scrollY < 100) {
+        setActiveSection('#top');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <>
       <Header />
-      <Nav />
+      <Nav activeSection={activeSection} onSelect={setActiveSection} />
       <main>
         <About />
         <Skills />
