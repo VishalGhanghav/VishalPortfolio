@@ -17,16 +17,16 @@ const navLinks = [
 
 const skillCategories = [
   {
-    title: 'Technologies',
+    title: 'Languages and Frameworks',
     skills: [
       { name: 'Java', level: 'Experienced' },
+      { name: 'JavaScript', level: 'Proficient' },
       { name: 'Spring Boot', level: 'Experienced' },
       { name: 'Node.js', level: 'Proficient' },
       { name: 'Hibernate', level: 'Experienced' },
       { name: 'Apache Kafka', level: 'Advanced' },
       { name: 'ActiveMQ', level: 'Proficient' },
       { name: 'ORMB', level: 'Experienced' },
-      { name: 'Microservices Architecture', level: 'Advanced' },
     ],
   },
   {
@@ -36,6 +36,9 @@ const skillCategories = [
       { name: 'MongoDB', level: 'Experienced' },
       { name: 'PostgreSQL', level: 'Proficient' },
       { name: 'Oracle SQL', level: 'Experienced' },
+      { name: 'Redis', level: 'Proficient' },
+      { name: 'ClickHouse', level: 'Proficient' }
+      
     ],
   },
   {
@@ -45,11 +48,11 @@ const skillCategories = [
       { name: 'Kubernetes', level: 'Proficient' },
       { name: 'Docker', level: 'Proficient' },
       { name: 'ArgoCD', level: 'Proficient' },
-      { name: 'Helm', level: 'Proficient' },
-      { name: 'Git', level: 'Experienced' },
-      { name: 'JIRA', level: 'Experienced' },
-      { name: 'Maven', level: 'Experienced' },
-      { name: 'JUnit', level: 'Experienced' },
+      { name: 'Github', level: 'Experienced' },
+      { name: 'Grafana', level: 'Proficient' },
+      { name: 'Prometheus', level: 'Proficient' },
+      { name: 'Zipkin', level: 'Proficient' },
+      { name: 'K6', level: 'Proficient' },
     ],
   },
 ];
