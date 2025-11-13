@@ -127,20 +127,44 @@ const footerLinks = [
   { href: '#contact', label: 'Contact' },
 ];
 
-const Header = () => (
-  <header id="top" style={{ backgroundImage: `url(${BG_TEXTURE_URL})` }}>
-    <div className="container header__container">
-      <h5>Hello, I'm</h5>
-      <h1>Vishal Ghanghav</h1>
-      <h5 className="text-light">Software Development Engineer-2</h5>
-      <div className="cta">
-        <a href={RESUME_URL} className="btn" download>
-          Download CV
-        </a>
-        <a href="#contact" className="btn btn-primary">
-          Let's Talk
-        </a>
-      </div>
+const Header = () => {
+  const handleResumeDownload = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(RESUME_URL);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch resume: ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = RESUME_URL.split('/').pop() || 'VishalGhanghav_Resume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  return (
+    <header id="top" style={{ backgroundImage: `url(${BG_TEXTURE_URL})` }}>
+      <div className="container header__container">
+        <h5>Hello, I'm</h5>
+        <h1>Vishal Ghanghav</h1>
+        <h5 className="text-light">Software Development Engineer-2</h5>
+        <div className="cta">
+          <a href={RESUME_URL} className="btn" onClick={handleResumeDownload}>
+            Download CV
+          </a>
+          <a href="#contact" className="btn btn-primary">
+            Let's Talk
+          </a>
+        </div>
       <a
         className="hero__feature"
         href="https://www.youtube.com/watch?v=dqlWGtt-oPY"
@@ -169,8 +193,9 @@ const Header = () => (
         Scroll Down
       </a>
     </div>
-  </header>
-);
+    </header>
+  );
+};
 
 const Nav = ({ activeSection, onSelect }) => (
   <nav>
