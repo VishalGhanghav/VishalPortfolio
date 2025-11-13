@@ -131,6 +131,17 @@ const Header = () => {
   const handleResumeDownload = async (event) => {
     event.preventDefault();
 
+    const downloadProbe = document.createElement('a');
+    const supportsDownloadAttr = typeof downloadProbe.download !== 'undefined';
+    const userAgent = navigator.userAgent || '';
+    const isAppleMobile = /iPad|iPhone|iPod/i.test(userAgent);
+    const isLegacyAndroid = /Android/i.test(userAgent) && !/Chrome|SamsungBrowser|Edg/i.test(userAgent);
+
+    if (!supportsDownloadAttr || isAppleMobile || isLegacyAndroid) {
+      window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
     try {
       const response = await fetch(RESUME_URL);
       if (!response.ok) {
@@ -142,10 +153,13 @@ const Header = () => {
       const link = document.createElement('a');
       link.href = blobUrl;
       link.download = RESUME_URL.split('/').pop() || 'VishalGhanghav_Resume.pdf';
+      link.rel = 'noopener';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(blobUrl);
+      window.setTimeout(() => {
+        window.URL.revokeObjectURL(blobUrl);
+      }, 1500);
     } catch (error) {
       window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
     }
