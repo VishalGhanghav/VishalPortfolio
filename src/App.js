@@ -134,11 +134,13 @@ const Header = () => {
     const downloadProbe = document.createElement('a');
     const supportsDownloadAttr = typeof downloadProbe.download !== 'undefined';
     const userAgent = navigator.userAgent || '';
-    const isAppleMobile = /iPad|iPhone|iPod/i.test(userAgent);
-    const isLegacyAndroid = /Android/i.test(userAgent) && !/Chrome|SamsungBrowser|Edg/i.test(userAgent);
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 
-    if (!supportsDownloadAttr || isAppleMobile || isLegacyAndroid) {
-      window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
+    if (!supportsDownloadAttr || isMobileDevice) {
+      const popup = window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
+      if (!popup) {
+        window.location.assign(RESUME_URL);
+      }
       return;
     }
 
@@ -161,7 +163,10 @@ const Header = () => {
         window.URL.revokeObjectURL(blobUrl);
       }, 1500);
     } catch (error) {
-      window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
+      const popup = window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
+      if (!popup) {
+        window.location.assign(RESUME_URL);
+      }
     }
   };
 
