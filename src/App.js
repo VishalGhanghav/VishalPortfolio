@@ -264,7 +264,6 @@ const About = () => (
             </span>
             <h5>Projects</h5>
             <small>Fintech Platforms</small>
-            <small>Revenue Management and Billing System</small>
           </article>
         </div>
         <p>
