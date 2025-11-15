@@ -258,13 +258,19 @@ const About = () => (
             <h5>Technologies</h5>
             <small>Java · Spring Boot · Kafka</small>
           </article>
-          <article className="about__card">
+          <a
+            className="about__card about__card--link"
+            href="https://github.com/VishalGhanghav"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="View GitHub projects"
+          >
             <span className="about__icon" role="img" aria-label="Projects">
               📈
             </span>
             <h5>Projects</h5>
             <small>Fintech Platforms</small>
-          </article>
+          </a>
         </div>
         <p>
           I'm SDE-2 with 4.7+ years of experience specializing in distributed and event-driven systems. Skilled in Java, SpringBoot, Kafka, and AWS, with a proven record of optimizing large-scale financial platforms for high throughput, reliability, and scalability.

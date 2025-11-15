@@ -399,12 +399,16 @@ p {
   border-radius: 1rem;
   padding: 1.5rem;
   text-align: center;
+  display: block;
+  color: inherit;
+  text-decoration: none;
 }
 
-.about__card:hover {
+.about__card:hover,
+.about__card:focus-visible {
   background: var(--color-hover);
   border-color: transparent;
-  cursor: default;
+  cursor: pointer;
 }
 
 .about__icon {
@@ -596,11 +600,16 @@ p {
 
   .skills__groups {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
   }
 
   .skills__content {
     grid-template-columns: 1fr;
     row-gap: 1.2rem;
+  }
+
+  .skills__category--wide .skills__groups {
+    grid-template-columns: 1fr;
   }
 }
 
